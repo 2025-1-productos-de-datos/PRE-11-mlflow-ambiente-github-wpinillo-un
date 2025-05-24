@@ -2,28 +2,21 @@
 
 import os
 import subprocess
-import warnings
-
-warnings.filterwarnings("ignore")
-
 
 def test_01():
+    script_path = os.path.join(os.path.dirname(__file__), "..", "run.sh")
+    assert os.path.isfile(script_path), f"Script no encontrado: {script_path}"
 
-    # Test if the homework script runs without errors
     try:
         subprocess.run(
-            [
-                "run.sh",
-            ],
+            [script_path],
             check=True,
         )
     except subprocess.CalledProcessError as e:
         raise Exception(f"Error running the homework script: {e}")
 
-    # Ensure the mlruns directory exists
     assert os.path.exists("mlruns"), "mlruns directory does not exist."
 
-    # Check if there are any experiments saved in mlruns/
     experiments = [
         d for d in os.listdir("mlruns") if os.path.isdir(os.path.join("mlruns", d))
     ]
